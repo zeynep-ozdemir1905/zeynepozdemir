@@ -12,17 +12,18 @@ export function ExperienceSection() {
         <SectionHeader
           icon={Briefcase}
           label="Experience"
-          title="Roles where I owned UI and delivery"
-          description="Contract, co-op, and internship work—each with clear outcomes for users, clients, and teams."
+          title="Shipping product work with real teams"
+          description="From AI chat interfaces in production to client websites and a cross-platform health dashboard."
           large
         />
         <div className="mt-16 space-y-0">
           {EXPERIENCE.map((item, index) => (
-            <SectionReveal key={`${item.role}-${index}`} delay={index * 0.05}>
+            <SectionReveal key={`${item.company}-${item.role}`} delay={index * 0.05}>
               <article className="grid gap-6 border-b border-[var(--line)] py-10 md:grid-cols-[220px_1fr] md:gap-12">
                 <div>
                   <p className="text-sm font-medium text-[var(--ink-soft)]">{item.date}</p>
                   <p className="mt-2 text-sm text-[var(--accent-bright)]">{item.location}</p>
+                  <span className="tag-minimal mt-3">{item.type}</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-[var(--ink)]">{item.role}</h3>

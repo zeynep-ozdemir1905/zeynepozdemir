@@ -2,11 +2,12 @@
 
 import { motion } from "framer-motion";
 import {
+  Bot,
   Code2,
   GitBranch,
   Layers,
-  Megaphone,
   Palette,
+  Server,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
@@ -16,10 +17,11 @@ import { SectionReveal } from "@/app/components/ui/section-reveal";
 
 const GROUP_META: Record<string, { icon: LucideIcon; accent: string }> = {
   Languages: { icon: Code2, accent: "from-slate-100 to-slate-50" },
-  Frameworks: { icon: Layers, accent: "from-blue-50 to-indigo-50/80" },
-  "Design & UX": { icon: Palette, accent: "from-rose-50 to-orange-50/80" },
-  "CMS & Marketing": { icon: Megaphone, accent: "from-amber-50 to-yellow-50/80" },
+  Frontend: { icon: Layers, accent: "from-blue-50 to-indigo-50/80" },
+  "Backend & AI": { icon: Server, accent: "from-violet-50 to-fuchsia-50/80" },
+  Design: { icon: Palette, accent: "from-rose-50 to-orange-50/80" },
   "Tools & Practices": { icon: GitBranch, accent: "from-emerald-50 to-teal-50/80" },
+  "AI-Assisted Development": { icon: Bot, accent: "from-sky-50 to-cyan-50/80" },
 };
 
 export function SkillsSection() {
@@ -29,8 +31,8 @@ export function SkillsSection() {
         <SectionHeader
           icon={Sparkles}
           label="Capabilities"
-          title="Skills that power the work below"
-          description="From Figma systems to production React—organized by how I actually use them on client and capstone projects."
+          title="The stack behind the work"
+          description="From Figma to production TypeScript and serverless AI backends, grouped by how I use them day to day."
           large
         />
 
@@ -68,14 +70,6 @@ export function SkillsSection() {
             );
           })}
         </div>
-
-        <SectionReveal delay={0.2} className="mt-12 flex flex-wrap justify-center gap-3">
-          {["React", "Figma", "TypeScript", "Next.js", "Tailwind CSS", "WCAG", "WordPress"].map((skill) => (
-            <span key={skill} className="tag-minimal">
-              {skill}
-            </span>
-          ))}
-        </SectionReveal>
       </div>
     </section>
   );

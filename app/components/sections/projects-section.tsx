@@ -8,7 +8,6 @@ import {
   projectPreviewLink,
   projects,
   Project,
-  socials,
   UI_DESIGNS,
   UiDesign,
   uiDesignEmbedSrc,
@@ -21,14 +20,14 @@ import { SectionReveal } from "@/app/components/ui/section-reveal";
 const WORK_VIEWS = [
   {
     id: "development",
-    label: "Development",
+    label: "Engineering",
     description:
-      "Shipped products and client builds—each row pairs a live preview with the problem, outcome, and stack.",
+      "AI agents, mobile apps, hackathon builds, and web projects — each with its outcome, my role, and the stack.",
   },
   {
     id: "ui-design",
     label: "UI Design",
-    description: "Figma systems and screens that informed the builds below—design intent, not decoration.",
+    description: "Figma files and prototypes — wireframes through high-fidelity UI, ready for developer handoff.",
   },
 ] as const;
 
@@ -146,7 +145,7 @@ function StoryPanel({ eyebrow, title, problem, outcome, contribution, tags, reve
 
       <dl className="mt-6 space-y-5">
         <div>
-          <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ink-soft)]">What it is</dt>
+          <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ink-soft)]">Overview</dt>
           <dd className="mt-2 text-[15px] leading-relaxed text-[var(--ink-muted)]">{problem}</dd>
         </div>
         <div>
@@ -185,8 +184,6 @@ function DevelopmentShowcase({ project, index, isLast, onOpen }: ProjectShowcase
   const reversed = index % 2 === 1;
   const embedSrc = projectEmbedSrc(project);
   const previewLink = projectPreviewLink(project);
-  const github = socials.find((s) => s.label === "GitHub")?.href ?? "https://github.com/";
-
   return (
     <SectionReveal delay={index * 0.05}>
       <article className={`relative py-14 md:py-20 ${index % 2 === 0 ? "lg:-mr-4" : "lg:-ml-4"}`}>
@@ -221,9 +218,11 @@ function DevelopmentShowcase({ project, index, isLast, onOpen }: ProjectShowcase
                     View project <ArrowUpRight className="h-4 w-4" />
                   </button>
                 )}
-                <a href={github} target="_blank" rel="noreferrer" className="btn-secondary">
-                  <Github className="h-4 w-4" /> GitHub
-                </a>
+                {project.github ? (
+                  <a href={project.github} target="_blank" rel="noreferrer" className="btn-secondary">
+                    <Github className="h-4 w-4" /> GitHub
+                  </a>
+                ) : null}
               </>
             }
           />
@@ -326,7 +325,7 @@ export function ProjectsSection() {
         <SectionHeader
           icon={FolderKanban}
           label="Selected work"
-          title="Projects that show how I design and ship"
+          title="Projects across AI, mobile, and web"
           description={activeView.description}
           centered
           large

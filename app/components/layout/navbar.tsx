@@ -3,14 +3,14 @@
 import { Download, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FOOTER_NAV, PROFILE, RESUME_PDF, socials } from "@/app/data/portfolio";
+import { PROFILE, RESUME_PDF, socials } from "@/app/data/portfolio";
 
 const NAV = [
   { id: "intro", label: "Intro", href: "#intro" },
   { id: "about", label: "About", href: "#about" },
-  { id: "resume", label: "Resume", href: "#resume" },
+  { id: "experience", label: "Experience", href: "#experience" },
+  { id: "projects", label: "Projects", href: "#projects" },
   { id: "skills", label: "Skills", href: "#skills" },
-  { id: "projects", label: "Work", href: "#projects" },
   { id: "contact", label: "Contact", href: "#contact" },
 ] as const;
 
@@ -57,8 +57,7 @@ export function Navbar({ mobileOpen, onToggle }: NavbarProps) {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4 md:px-6">
         <a href="#intro" className="flex shrink-0 items-center gap-3 no-underline">
-          <span className="font-display text-lg font-bold text-[var(--ink)]">{PROFILE.name.split(" ")[0]}</span>
-          <span className="hidden text-sm text-[var(--ink-soft)] sm:inline">· Portfolio</span>
+          <span className="font-display text-lg font-bold text-[var(--ink)]">{PROFILE.name}</span>
         </a>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -99,7 +98,7 @@ export function Navbar({ mobileOpen, onToggle }: NavbarProps) {
             whileTap={{ scale: 0.98 }}
             className="hidden rounded-full bg-[var(--ink)] px-5 py-2 text-sm font-medium text-white sm:inline-flex"
           >
-            Hire me
+            Email me
           </motion.a>
           <button
             type="button"

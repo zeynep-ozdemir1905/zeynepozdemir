@@ -12,8 +12,8 @@ export function VolunteerSection() {
         <SectionHeader
           icon={Heart}
           label="Volunteer"
-          title="Community leadership beyond the desk"
-          description="Reliability, empathy, and follow-through—skills that transfer directly to cross-functional teams."
+          title="Leadership and community"
+          description="Design, marketing, and outreach work for student and community organizations."
           large
         />
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

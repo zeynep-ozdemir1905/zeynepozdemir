@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User } from "lucide-react";
-import { aboutStats, EDUCATION, EXPERIENCE } from "@/app/data/portfolio";
+import { GraduationCap, Sparkles, User } from "lucide-react";
+import { ABOUT_COPY, AI_WORKFLOW, EDUCATION, RESUME_SUMMARY, aboutStats } from "@/app/data/portfolio";
 import { SectionHeader } from "@/app/components/ui/section-header";
 import { SectionReveal } from "@/app/components/ui/section-reveal";
 
@@ -13,8 +13,8 @@ export function AboutSection() {
         <SectionReveal>
           <SectionHeader
             label="About"
-            title="Design systems thinker who ships on the front end"
-            description="I bridge Figma and code—owning clarity, accessibility, and polished UI delivery for teams that need one person from concept to production."
+            title={ABOUT_COPY.title}
+            description={ABOUT_COPY.description}
             icon={User}
             large
           />
@@ -35,37 +35,37 @@ export function AboutSection() {
         </SectionReveal>
 
         <SectionReveal delay={0.08}>
-          <p className="eyebrow">Work timeline</p>
-          <div className="mt-8 space-y-8">
-            {EXPERIENCE.map((item, index) => (
-              <motion.div
-                key={`${item.role}-${index}`}
-                initial={{ opacity: 0, x: 12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.06 }}
-                className="group border-b border-[var(--line)] pb-8 last:border-0 last:pb-0"
-              >
-                <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--ink-soft)]">{item.date}</p>
-                <h3 className="mt-2 text-lg font-semibold text-[var(--ink)] transition-colors group-hover:text-[var(--accent-bright)]">
-                  {item.role}
-                </h3>
-                <p className="mt-1 text-sm text-[var(--ink-muted)]">
-                  {item.company} · {item.location}
-                </p>
-              </motion.div>
-            ))}
+          <p className="eyebrow">Summary</p>
+          <p className="mt-6 text-base leading-relaxed text-[var(--ink-muted)] md:text-lg">{RESUME_SUMMARY}</p>
+
+          <div className="mt-10 rounded-2xl border border-[var(--line)] bg-[var(--surface-elevated)] p-6">
+            <div className="flex items-center gap-3">
+              <Sparkles size={18} className="text-[var(--accent-bright)]" strokeWidth={1.5} />
+              <p className="eyebrow">{AI_WORKFLOW.label}</p>
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-[var(--ink-muted)]">{AI_WORKFLOW.summary}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {AI_WORKFLOW.tools.map((tool) => (
+                <span key={tool} className="tag-minimal">
+                  {tool}
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="mt-14 border-t border-[var(--line)] pt-10">
-            <p className="eyebrow">Education</p>
+            <div className="flex items-center gap-3">
+              <GraduationCap size={18} className="text-[var(--accent-bright)]" strokeWidth={1.5} />
+              <p className="eyebrow">Education</p>
+            </div>
             <div className="mt-6 space-y-6">
               {EDUCATION.map((edu) => (
                 <div key={edu.degree}>
                   <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--ink-soft)]">{edu.date}</p>
                   <h4 className="mt-2 font-semibold text-[var(--ink)]">{edu.degree}</h4>
-                  <p className="mt-1 text-sm text-[var(--accent-bright)]">{edu.school}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{edu.note}</p>
+                  <p className="mt-1 text-sm text-[var(--accent-bright)]">
+                    {edu.school} · {edu.location}
+                  </p>
                 </div>
               ))}
             </div>

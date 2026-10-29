@@ -46,10 +46,13 @@ function DeviceScreen({ children, src, title, accent, interactive }: ScreenProps
       style={{ background: accent ?? "linear-gradient(160deg, #e0f2fe, #bfdbfe)" }}
     >
       {children ?? (
-        <div className="flex flex-col items-center gap-2 opacity-80">
+        <div className="flex w-full flex-col items-center gap-2 opacity-90">
           <div className="h-2 w-16 rounded-full bg-white/70" />
           <div className="h-2 w-24 rounded-full bg-white/50" />
           <div className="mt-2 h-20 w-full max-w-[85%] rounded-lg bg-white/40" />
+          {title ? (
+            <p className="mt-1 max-w-[85%] truncate text-[11px] font-semibold text-[#1e3a5f]/70">{title}</p>
+          ) : null}
         </div>
       )}
     </div>
@@ -87,7 +90,7 @@ export function DesktopFrame({ className = "", wide = false, ...screen }: Deskto
   const screenH = screen.interactive
     ? "h-[min(420px,55vh)]"
     : wide
-      ? "aspect-video max-h-[220px]"
+      ? "h-[240px] md:h-[270px]"
       : "h-[200px] md:h-[220px]";
 
   return (
@@ -103,7 +106,9 @@ export function DesktopFrame({ className = "", wide = false, ...screen }: Deskto
           <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
         </div>
         <div className="min-w-0 flex-1 truncate rounded-md bg-[#1e293b] px-2 py-0.5 text-[9px] text-slate-400">
-          {screen.title ? `${screen.title.toLowerCase().replace(/\s+/g, "")}.app` : "preview.app"}
+          {screen.src && screen.title
+            ? `${screen.title.toLowerCase().replace(/[^a-z0-9]+/g, "")}.app`
+            : "Project overview"}
         </div>
       </div>
       <div className={`overflow-hidden bg-white ${screenH}`}>
@@ -212,7 +217,7 @@ export function ProjectDevicePreview({
       <div
         className={`flex items-center justify-center px-4 ${compact ? "py-4" : "min-h-[280px] py-6"} ${className}`}
       >
-        <DesktopFrame wide {...screen} className={compact ? "max-w-full" : ""} />
+        <DesktopFrame wide {...screen} />
       </div>
     );
   }

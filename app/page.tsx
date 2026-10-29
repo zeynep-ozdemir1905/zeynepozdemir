@@ -7,8 +7,6 @@ import { AboutSection } from "@/app/components/sections/about-section";
 import { ContactSection } from "@/app/components/sections/contact-section";
 import { ExperienceSection } from "@/app/components/sections/experience-section";
 import { HeroSection } from "@/app/components/sections/hero-section";
-import { InteractiveResumeSection } from "@/app/components/sections/interactive-resume-section";
-import { InternshipsSection } from "@/app/components/sections/internships-section";
 import { ProjectsSection } from "@/app/components/sections/projects-section";
 import { SkillsSection } from "@/app/components/sections/skills-section";
 import { VolunteerSection } from "@/app/components/sections/volunteer-section";
@@ -35,11 +33,9 @@ export default function PortfolioPage() {
       <HeroSection />
       <MarqueeStrip />
       <AboutSection />
-      <InteractiveResumeSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <InternshipsSection />
       <ExperienceSection />
+      <ProjectsSection />
+      <SkillsSection />
       <VolunteerSection />
       <ContactSection />
       <footer className="border-t border-[var(--line)] px-6 pb-16 pt-12">
@@ -56,7 +52,7 @@ export default function PortfolioPage() {
             ))}
           </div>
           <p className="mt-8 text-center text-sm text-[var(--ink-soft)]">
-            Zeynep Ozdemir · Calgary, AB · Open to work
+            Zeynep Ozdemir · Junior Software Engineer · Calgary, AB · Open to Canada and US
           </p>
         </div>
       </footer>

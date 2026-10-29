@@ -20,9 +20,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zeynep Ozdemir | UX/UI Designer & Front-End Developer",
+  metadataBase: new URL("https://zeynepportfoy.vercel.app"),
+  title: "Zeynep Ozdemir | Junior Software Engineer — Frontend & Full-Stack",
   description:
-    "Portfolio of Zeynep Ozdemir — UX/UI design and front-end development in Calgary. Enterprise UI, React/Next.js, accessible products, and shipped capstone & client work.",
+    "Portfolio of Zeynep Ozdemir, a Calgary-based junior software engineer building accessible products in React, Next.js, and TypeScript, with AI chat interfaces, serverless LLM agents, and end-to-end design experience.",
+  openGraph: {
+    title: "Zeynep Ozdemir | Junior Software Engineer",
+    description:
+      "Frontend & full-stack engineer with a UI/UX foundation. React, Next.js, TypeScript, and LLM-powered products. Open to Canada and US.",
+    url: "https://zeynepportfoy.vercel.app",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
