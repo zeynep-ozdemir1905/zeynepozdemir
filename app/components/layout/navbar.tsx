@@ -28,6 +28,8 @@ export function Navbar() {
           if (e.isIntersecting) setActive((e.target as HTMLElement).id);
         });
       },
+      // threshold must stay 0: the active band is a thin strip of the viewport, so a
+      // ratio like 0.15 can never be met by tall sections (Projects) and the link sticks.
       { threshold: 0, rootMargin: "-30% 0px -60% 0px" },
     );
     NAV.forEach(({ id }) => {

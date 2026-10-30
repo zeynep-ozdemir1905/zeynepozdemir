@@ -26,8 +26,13 @@ export function ContactSection() {
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    // Spam trap: real visitors never see or fill this field.
-    if (data.get("_honey")) return;
+    // Spam trap: real visitors never see or fill this field. Bots get a fake
+    // "sent" state (nothing is submitted) so they don't retry or probe the form.
+    if (data.get("_honey")) {
+      form.reset();
+      setStatus("sent");
+      return;
+    }
 
     setStatus("sending");
     setError("");
