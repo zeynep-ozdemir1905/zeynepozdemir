@@ -68,7 +68,7 @@ export const UI_DESIGNS: UiDesign[] = [
     title: "Go Apricot",
     description: "Mobile workforce check-in flows — wireframes through high-fidelity UI.",
     tags: ["Mobile", "UX Research", "Prototyping"],
-    accent: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+    accent: "#ffd2b3",
     device: "mobile",
     figma:
       "https://embed.figma.com/design/90lijAgk5ZeqkDhio7gfR1/Capstone-Employee?node-id=0-1&embed-host=share",
@@ -83,7 +83,7 @@ export const UI_DESIGNS: UiDesign[] = [
     title: "Calgary Gift Card App",
     description: "Gift-card onboarding and purchase flows with a warm, approachable visual system.",
     tags: ["Mobile", "UI Design", "Wireframes"],
-    accent: "linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%)",
+    accent: "#a8e4db",
     device: "mobile",
     figma:
       "https://embed.figma.com/design/93G7mly7oPhtVMvHCH9C5a/Wireframe-Zeynep?node-id=0-1&embed-host=share",
@@ -98,7 +98,7 @@ export const UI_DESIGNS: UiDesign[] = [
     title: "Laise",
     description: "UI design for Laise — polished layouts with clear hierarchy and a cohesive visual system.",
     tags: ["Web", "UI Design", "Figma"],
-    accent: "linear-gradient(135deg, #ede9fe 0%, #c4b5fd 100%)",
+    accent: "#d9cef7",
     device: "desktop",
     figma:
       "https://embed.figma.com/design/QyqmbgUfTTaXKFIdnxtDdw/Laise-Farjeen?node-id=1-2&embed-host=share",
@@ -159,7 +159,7 @@ export const rotatingTitles = [
 
 /** Hero — recruiter-first messaging */
 export const HERO_COPY = {
-  badge: "Open to Canada & US · Based in Calgary, AB",
+  badge: "Available for junior software engineer roles",
   /** Two-part headline: [plain, gradient] */
   headline: ["Frontend & full-stack engineering,", "grounded in design"] as const,
   subline:
@@ -192,7 +192,8 @@ export const AI_WORKFLOW = {
 
 /** Short pitch used in the About section header. */
 export const ABOUT_COPY = {
-  title: "An engineer who designs, and a designer who ships",
+  titleLead: "An engineer who designs, and a",
+  titleMark: "designer who ships",
   description:
     "I started in UI/UX and grew into full-stack engineering. That means I can sit in a design review, write the React, wire up the API, and deploy it — then document how it all fits together.",
 };
@@ -384,7 +385,7 @@ export const projects: Project[] = [
     description:
       "A serverless AI agent that automates real estate lead and inquiry handling, giving agents faster first responses to prospects.",
     tech: ["Gemini", "Supabase", "Resend", "Vercel Serverless", "TypeScript"],
-    accent: "linear-gradient(135deg, #e0f2fe 0%, #93c5fd 100%)",
+    accent: "#d9cef7",
     device: "desktop",
     github: "https://github.com/crv0326/real-estate-AI-agent",
     outcome: "Faster first responses to prospects, with every lead captured and followed up automatically.",
@@ -401,7 +402,7 @@ export const projects: Project[] = [
     description:
       "A cross-platform mobile app for industrial workforce check-ins, taken from concept to an App Store-ready build.",
     tech: ["React Native (Expo)", "TypeScript", "Tailwind CSS", "Figma"],
-    accent: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+    accent: "#ffd2b3",
     device: "mobile",
     figma:
       "https://embed.figma.com/design/90lijAgk5ZeqkDhio7gfR1/Capstone-Employee?node-id=0-1&embed-host=share",
@@ -419,7 +420,7 @@ export const projects: Project[] = [
     description:
       "A gamified Chrome extension with a lockdown-style focus browser, timed study sessions, and distraction control.",
     tech: ["Chrome Extension", "TypeScript", "UI Design", "Hackathon"],
-    accent: "linear-gradient(135deg, #ecfdf5 0%, #6ee7b7 100%)",
+    accent: "#eaf7a6",
     device: "desktop",
     outcome: "Won the Community Choice Award at the hackathon.",
     contribution:
@@ -435,7 +436,7 @@ export const projects: Project[] = [
     description:
       "A wildfire risk prediction tool that estimates fire danger before ignition across Alberta, British Columbia, and Saskatchewan.",
     tech: ["Hackathon", "Risk Prediction", "Business Proposal", "Pitch"],
-    accent: "linear-gradient(135deg, #fff7ed 0%, #fdba74 100%)",
+    accent: "#f9a8c9",
     device: "desktop",
     github: "https://github.com/SaladStik/Firewatch",
     outcome: "A pre-ignition risk view for three western provinces, pitched with a full business case.",
@@ -450,7 +451,7 @@ export const projects: Project[] = [
     category: "Web",
     description: "Front-end web design and build of a responsive, multi-page brand website for a marine and subsea services company.",
     tech: ["Vite", "JavaScript", "Tailwind CSS", "Figma"],
-    accent: "linear-gradient(135deg, #e0f2fe 0%, #93c5fd 100%)",
+    accent: "#a8e4db",
     device: "desktop",
     prototype:
       "https://www.figma.com/proto/qhs7vi6wQTljzR0POBCpWJ/ds_projectdrillsense?node-id=0-1&t=U6d9Nk78Tav6tFYn-1",
@@ -468,7 +469,7 @@ export const projects: Project[] = [
     description:
       "A cozy multiplayer penguin town built in Godot — a revised version of the original hackathon game, with developer handoff docs and UI mockups.",
     tech: ["Godot", "GDScript", "Multiplayer", "UI Mockups"],
-    accent: "linear-gradient(135deg, #ecfeff 0%, #a5f3fc 100%)",
+    accent: "#c0cbff",
     device: "desktop",
     github: "https://github.com/amadeusk1/mruhacks",
     outcome: "A playable multiplayer prototype documented with a developer handoff and 48 UI screen concepts.",

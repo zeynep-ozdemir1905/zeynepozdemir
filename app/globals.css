@@ -1,32 +1,50 @@
 @import "tailwindcss";
 
+/* ───────────────────────── Design tokens ─────────────────────────
+   Palette sampled from the "bold small business" reference: flat pastel tiles,
+   one deep ink for text, and a few loud accents. Every pastel is paired with
+   ink text (all >= 7:1) so the loud look stays WCAG AA/AAA accessible. */
+@theme {
+  --color-ink: #1a1033;
+  --color-ink-muted: #3d3560;
+  --color-ink-soft: #5a5280;
+  --color-cream: #fff7e8;
+  --color-lavender: #d9cef7;
+  --color-bubblegum: #f9a8c9;
+  --color-blush: #ffe4f0;
+  --color-zest: #eaf7a6;
+  --color-aqua: #a8e4db;
+  --color-peach: #ffd2b3;
+  --color-grape: #4b46a8;
+  --color-cherry: #f0787c;
+  --color-forest: #0d4a2b;
+}
+
 :root {
-  --ink: #0c1222;
-  --ink-muted: #4a5568;
-  --ink-soft: #64748b;
-  --surface: #fafaf8;
-  --surface-warm: #f4f2ed;
+  --ink: #1a1033;
+  --ink-muted: #3d3560;
+  --ink-soft: #5a5280;
+  --surface: #fff7e8;
+  --surface-warm: #fdeed2;
   --surface-elevated: #ffffff;
-  --line: rgba(12, 18, 34, 0.08);
-  --line-strong: rgba(12, 18, 34, 0.14);
-  --accent: #1e3a5f;
-  --accent-bright: #2563eb;
-  --accent-warm: #c17f59;
+  --line: rgba(26, 16, 51, 0.12);
+  --line-strong: rgba(26, 16, 51, 0.28);
+  --accent: #4b46a8;
+  --accent-bright: #4b46a8;
+  --accent-warm: #ff6fa5;
   --background: var(--surface);
   --foreground: var(--ink);
-  --muted: var(--ink-soft);
-  --card: var(--surface-elevated);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono);
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -35,137 +53,387 @@ body {
   font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* ───────────────────────── Type ───────────────────────── */
 .font-display {
-  font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Hollow lettering, like "FEAR LESS" in the reference */
+.text-outline {
+  color: var(--outline-fill, #fff7e8);
+  -webkit-text-stroke: 4px var(--ink);
+  paint-order: stroke fill;
+}
+
+/* Highlighter block behind a word */
+.marker {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.18em;
+  margin: 0 -0.05em;
+  z-index: 0;
+}
+.marker::before {
+  content: "";
+  position: absolute;
+  inset: 0.12em -0.04em 0.02em;
+  background: var(--marker, var(--color-bubblegum));
+  border-radius: 0.28em;
+  transform: rotate(-1.6deg);
+  z-index: -1;
 }
 
 .eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  padding: 0.3rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-bright);
+  color: var(--ink);
 }
 
-/* Legacy alias — lighter than before */
-.glass-card {
-  border-radius: 1.25rem;
-  border: 1px solid var(--line);
-  background: var(--surface-elevated);
-  box-shadow: 0 1px 2px rgba(12, 18, 34, 0.04);
+/* ───────────────────────── Surfaces ───────────────────────── */
+.panel {
+  border-radius: 2rem;
+  padding: 3.5rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .panel {
+    border-radius: 3rem;
+    padding: 6rem 3rem;
+  }
 }
 
-.glass-card-dark {
-  border-radius: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(160deg, #0c1222 0%, #1e3a5f 100%);
-  color: #f8fafc;
+.card-white {
+  border-radius: 1.5rem;
+  background: #fff;
+  border: 2px solid var(--ink);
 }
 
-.surface-flat {
-  border-top: 1px solid var(--line);
-}
-
-.surface-panel {
-  border-radius: 1rem;
-  border: 1px solid var(--line);
-  background: var(--surface-elevated);
+.sticker {
+  border: 4px solid #fff;
+  box-shadow: 0 16px 30px -14px rgba(26, 16, 51, 0.45);
 }
 
 .divider-editorial {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 8px, transparent 8px 16px);
+  opacity: 0.2;
 }
 
+/* ───────────────────────── Controls ───────────────────────── */
 .tag-minimal {
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  padding: 0.35rem 0.85rem;
+  border: 1.5px solid var(--ink);
+  background: #fff;
+  padding: 0.3rem 0.8rem;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-muted);
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-.tag-minimal:hover {
-  border-color: var(--line-strong);
-  color: var(--ink);
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.875rem 1.75rem;
-  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  color: white;
-  background: var(--ink);
+  color: var(--ink);
   transition: transform 0.2s ease, background 0.2s ease;
 }
-
-.btn-primary:hover {
-  background: var(--accent);
+.tag-minimal:hover {
+  background: var(--color-zest);
+  transform: rotate(-2deg) translateY(-1px);
 }
 
+.btn-primary,
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  padding: 0.875rem 1.75rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  padding: 0.85rem 1.6rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 2px solid var(--ink);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  cursor: pointer;
+}
+.btn-primary {
+  color: #fff;
+  background: var(--ink);
+  box-shadow: 4px 4px 0 var(--color-bubblegum);
+}
+.btn-secondary {
   color: var(--ink);
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink);
 }
-
+.btn-primary:hover,
 .btn-secondary:hover {
-  border-color: var(--ink);
-  background: var(--surface-warm);
+  transform: translate(-2px, -2px);
+}
+.btn-primary:hover {
+  box-shadow: 7px 7px 0 var(--color-bubblegum);
+}
+.btn-secondary:hover {
+  box-shadow: 7px 7px 0 var(--ink);
+  background: var(--color-zest);
+}
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
-.section-alt {
-  background: var(--surface-warm);
+/* ───────────────────────── Motion (CSS-driven = cheap, no JS) ───────────────────────── */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 2deg));
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
 }
 
-.section-projects {
-  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-warm) 12%, var(--surface) 100%);
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.animate-marquee-reverse {
+  animation: marquee-reverse 44s linear infinite;
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+.animate-wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+}
+.pause-on-hover:hover .animate-marquee,
+.pause-on-hover:hover .animate-marquee-reverse {
+  animation-play-state: paused;
 }
 
+/* ───────────────────────── Misc ───────────────────────── */
 ::selection {
-  background: rgba(37, 99, 235, 0.18);
+  background: var(--color-bubblegum);
   color: var(--ink);
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border-radius: 99px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
-  border-radius: 99px;
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 200;
+  border-radius: 9999px;
+  background: var(--ink);
+  padding: 0.7rem 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-float,
+  .animate-spin-slow,
+  .animate-wiggle {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Opening splash: name pops, then the card slides away ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-lavender);
+  border-bottom: 3px solid var(--color-ink);
+  border-radius: 0 0 3rem 3rem;
+  animation: splash-exit 0.85s cubic-bezier(0.76, 0, 0.24, 1) 2.15s forwards;
+}
+.splash-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: splash-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.splash-blob {
+  opacity: 0;
+  animation: splash-blob 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.splash-sub {
+  opacity: 0;
+  animation: splash-fade 0.5s ease 1.1s forwards;
+}
+@keyframes splash-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5em) scale(0.5) rotate(-8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes splash-blob {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes splash-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes splash-exit {
+  0% {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  99% {
+    visibility: visible;
+  }
+  100% {
+    transform: translateY(-105%);
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
+  }
+}
+
+
+/* ---------- Opening splash: name pops, then the card slides away ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-lavender);
+  border-bottom: 3px solid var(--color-ink);
+  border-radius: 0 0 3rem 3rem;
+  animation: splash-exit 0.85s cubic-bezier(0.76, 0, 0.24, 1) 2.15s forwards;
+}
+.splash-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: splash-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.splash-blob {
+  opacity: 0;
+  animation: splash-blob 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.splash-sub {
+  opacity: 0;
+  animation: splash-fade 0.5s ease 1.1s forwards;
+}
+@keyframes splash-pop {
+  0% { opacity: 0; transform: translateY(0.5em) scale(0.5) rotate(-8deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes splash-blob {
+  0% { opacity: 0; scale: 0.4; }
+  100% { opacity: 1; scale: 1; }
+}
+@keyframes splash-fade {
+  to { opacity: 1; }
+}
+@keyframes splash-exit {
+  0% { transform: translateY(0); visibility: visible; }
+  99% { visibility: visible; }
+  100% { transform: translateY(-105%); visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash { display: none; }
 }

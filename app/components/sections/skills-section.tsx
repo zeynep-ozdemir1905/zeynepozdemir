@@ -1,76 +1,78 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Bot,
-  Code2,
-  GitBranch,
-  Layers,
-  Palette,
-  Server,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
-import { SKILL_GROUPS } from "@/app/data/portfolio";
+import { Bot, Code2, GitBranch, Layers, Palette, Server, Sparkles, type LucideIcon } from "lucide-react";
+import { Flower } from "@/app/components/ui/blob";
+import { Panel } from "@/app/components/ui/panel";
 import { SectionHeader } from "@/app/components/ui/section-header";
 import { SectionReveal } from "@/app/components/ui/section-reveal";
+import { SKILL_GROUPS } from "@/app/data/portfolio";
 
-const GROUP_META: Record<string, { icon: LucideIcon; accent: string }> = {
-  Languages: { icon: Code2, accent: "from-slate-100 to-slate-50" },
-  Frontend: { icon: Layers, accent: "from-blue-50 to-indigo-50/80" },
-  "Backend & AI": { icon: Server, accent: "from-violet-50 to-fuchsia-50/80" },
-  Design: { icon: Palette, accent: "from-rose-50 to-orange-50/80" },
-  "Tools & Practices": { icon: GitBranch, accent: "from-emerald-50 to-teal-50/80" },
-  "AI-Assisted Development": { icon: Bot, accent: "from-sky-50 to-cyan-50/80" },
+const GROUP_META: Record<string, { icon: LucideIcon; bg: string; rotate: string }> = {
+  Languages: { icon: Code2, bg: "bg-lavender", rotate: "-0.8deg" },
+  Frontend: { icon: Layers, bg: "bg-bubblegum", rotate: "0.8deg" },
+  "Backend & AI": { icon: Server, bg: "bg-aqua", rotate: "-0.6deg" },
+  Design: { icon: Palette, bg: "bg-peach", rotate: "0.7deg" },
+  "Tools & Practices": { icon: GitBranch, bg: "bg-white", rotate: "-0.7deg" },
+  "AI-Assisted Development": { icon: Bot, bg: "bg-blush", rotate: "0.6deg" },
 };
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="scroll-mt-28 px-6 py-28 md:py-32">
-      <div className="mx-auto w-full max-w-7xl">
-        <SectionHeader
-          icon={Sparkles}
-          label="Capabilities"
-          title="The stack behind the work"
-          description="From Figma to production TypeScript and serverless AI backends, grouped by how I use them day to day."
-          large
-        />
+    <Panel
+      id="skills"
+      tone="zest"
+      labelledBy="skills-title"
+      decor={
+        <Flower lobes={6} depth={0.3} fill="#d9cef7" className="pointer-events-none absolute -right-20 bottom-[-6rem] h-80 w-80 rotate-6 opacity-80" />
+      }
+    >
+      <SectionHeader
+        id="skills-title"
+        icon={Sparkles}
+        label="Capabilities"
+        large
+        title={
+          <>
+            The stack{" "}
+            <span className="text-outline" style={{ ["--outline-fill" as string]: "#eaf7a6" }}>behind</span> the work
+          </>
+        }
+        description="From Figma to production TypeScript and serverless AI backends, grouped by how I use them day to day."
+      />
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {SKILL_GROUPS.map((entry, index) => {
-            const meta = GROUP_META[entry.group] ?? { icon: Sparkles, accent: "from-slate-50 to-white" };
-            const Icon = meta.icon;
-
-            return (
-              <SectionReveal key={entry.group} delay={index * 0.06}>
+      <ul className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {SKILL_GROUPS.map((entry, index) => {
+          const meta = GROUP_META[entry.group] ?? { icon: Sparkles, bg: "bg-white", rotate: "0deg" };
+          const Icon = meta.icon;
+          return (
+            <li key={entry.group}>
+              <SectionReveal delay={index * 0.05} className="h-full">
                 <motion.article
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 28 }}
-                  className="group h-full rounded-2xl border border-[var(--line)] bg-[var(--surface-elevated)] p-6 transition-shadow hover:shadow-[0_20px_50px_-20px_rgba(12,18,34,0.12)]"
+                  whileHover={{ y: -6, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                  style={{ rotate: meta.rotate }}
+                  className={`h-full rounded-[1.75rem] border-2 border-ink p-6 shadow-[5px_5px_0_#1a1033] ${meta.bg}`}
                 >
-                  <div
-                    className={`mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br ${meta.accent} text-[var(--accent)]`}
-                  >
-                    <Icon size={20} strokeWidth={1.5} />
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl border-2 border-ink bg-white text-ink">
+                      <Icon size={20} aria-hidden />
+                    </span>
+                    <h3 className="font-display text-xl text-ink">{entry.group}</h3>
                   </div>
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--ink)]">{entry.group}</h3>
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <ul className="mt-5 flex flex-wrap gap-2">
                     {entry.items.map((item) => (
-                      <motion.span
-                        key={item}
-                        whileHover={{ scale: 1.04 }}
-                        className="tag-minimal cursor-default"
-                      >
+                      <li key={item} className="tag-minimal">
                         {item}
-                      </motion.span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </motion.article>
               </SectionReveal>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+            </li>
+          );
+        })}
+      </ul>
+    </Panel>
   );
 }

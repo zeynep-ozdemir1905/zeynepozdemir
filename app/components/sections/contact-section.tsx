@@ -1,17 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle2, Mail, Send } from "lucide-react";
+import { CheckCircle2, Mail, MapPin, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { PROFILE, socials } from "@/app/data/portfolio";
+import { Flower, SpinBadge } from "@/app/components/ui/blob";
+import { Panel } from "@/app/components/ui/panel";
 import { SectionHeader } from "@/app/components/ui/section-header";
 import { SectionReveal } from "@/app/components/ui/section-reveal";
+import { PROFILE, socials } from "@/app/data/portfolio";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Plain HTML form endpoint: delivers submissions straight to this inbox, no API key needed. */
+const FORM_ENDPOINT = `https://formsubmit.co/${PROFILE.emailDisplay}`;
+
 const fieldClass =
-  "peer w-full border-b border-[var(--line-strong)] bg-transparent px-0 pb-3 pt-6 text-sm text-[var(--ink)] outline-none transition focus:border-[var(--ink)]";
-const labelClass = "absolute left-0 top-2 text-xs font-medium uppercase tracking-[0.14em] text-[var(--ink-soft)]";
+  "w-full rounded-2xl border-2 border-ink bg-cream px-4 py-3 text-[15px] font-medium text-ink outline-none transition placeholder:text-ink-soft focus:bg-white focus:shadow-[3px_3px_0_#1a1033]";
+const labelClass = "mb-1.5 block text-xs font-extrabold uppercase tracking-[0.12em] text-ink";
 
 export function ContactSection() {
   const [status, setStatus] = useState<Status>("idle");
@@ -20,20 +24,23 @@ export function ContactSection() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
+    const data = new FormData(form);
+
+    // Spam trap: real visitors never see or fill this field.
+    if (data.get("_honey")) return;
 
     setStatus("sending");
     setError("");
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(FORM_ENDPOINT.replace("formsubmit.co/", "formsubmit.co/ajax/"), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { Accept: "application/json" },
+        body: data,
       });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) {
-        setError(json.error ?? "Something went wrong.");
+      const json = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
+      if (!res.ok || json.success === false || json.success === "false") {
+        setError(json.message ?? "Something went wrong. Please email me directly.");
         setStatus("error");
         return;
       }
@@ -46,27 +53,54 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="section-alt scroll-mt-28 px-6 py-28 md:py-36">
-      <div className="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
+    <Panel
+      id="contact"
+      tone="bubblegum"
+      labelledBy="contact-title"
+      decor={
+        <>
+          <Flower lobes={8} depth={0.22} fill="#eaf7a6" className="pointer-events-none absolute -left-20 bottom-[-5rem] h-72 w-72 -rotate-6" />
+          <div className="pointer-events-none absolute right-8 top-8 hidden md:block">
+            <SpinBadge text="Say hello ✺ Say hello ✺ " size={132} bg="#fff7e8" />
+          </div>
+        </>
+      }
+    >
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
         <SectionReveal>
           <SectionHeader
+            id="contact-title"
             icon={Mail}
             label="Contact"
-            title="Let's build something together"
-            description="Open to junior software engineering roles across Canada and the US. I reply quickly and am happy to walk through any project in detail."
             large
+            title={
+              <>
+                Let&apos;s build{" "}
+                <span className="marker" style={{ ["--marker" as string]: "#eaf7a6" }}>
+                  something
+                </span>{" "}
+                together
+              </>
+            }
+            description="Open to junior software engineering roles across Canada and the US. I reply quickly and am happy to walk through any project in detail."
           />
-          <p className="mt-8 text-sm text-[var(--ink-muted)]">
-            Prefer email?{" "}
-            <a href={PROFILE.emailHref} className="font-medium text-[var(--accent-bright)] hover:underline">
-              {PROFILE.emailDisplay}
-            </a>
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <ul className="mt-8 space-y-3 text-[15px] font-bold text-ink">
+            <li className="flex items-center gap-3">
+              <Mail size={18} aria-hidden />
+              <a href={PROFILE.emailHref} className="underline decoration-2 underline-offset-4 hover:bg-zest">
+                {PROFILE.emailDisplay}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <MapPin size={18} aria-hidden />
+              {PROFILE.city} · {PROFILE.relocation}
+            </li>
+          </ul>
+          <div className="mt-6 flex flex-wrap gap-2.5">
             {socials.map((social) => (
-              <motion.a key={social.label} href={social.href} whileHover={{ y: -2 }} className="tag-minimal">
+              <a key={social.label} href={social.href} className="tag-minimal">
                 {social.label}
-              </motion.a>
+              </a>
             ))}
           </div>
         </SectionReveal>
@@ -75,11 +109,11 @@ export function ContactSection() {
           {status === "sent" ? (
             <div
               role="status"
-              className="flex flex-col items-start gap-4 rounded-2xl border border-[var(--line)] bg-[var(--surface-elevated)] p-8"
+              className="flex flex-col items-start gap-4 rounded-[2rem] border-2 border-ink bg-white p-8 shadow-[6px_6px_0_#1a1033]"
             >
-              <CheckCircle2 className="h-8 w-8 text-[#057642]" aria-hidden />
-              <h3 className="font-display text-2xl font-bold text-[var(--ink)]">Message sent</h3>
-              <p className="text-sm leading-relaxed text-[var(--ink-muted)]">
+              <CheckCircle2 className="h-9 w-9 text-forest" aria-hidden />
+              <h3 className="font-display text-3xl text-ink">Message sent</h3>
+              <p className="text-base font-medium leading-relaxed text-ink-muted">
                 Thanks for reaching out. I&apos;ll reply to the email you provided as soon as I can.
               </p>
               <button type="button" onClick={() => setStatus("idle")} className="btn-secondary">
@@ -88,11 +122,16 @@ export function ContactSection() {
             </div>
           ) : (
             <form
-              className="grid gap-5 border-t border-[var(--line)] pt-8 lg:border-t-0 lg:pt-0"
+              className="grid gap-5 rounded-[2rem] border-2 border-ink bg-white p-6 shadow-[6px_6px_0_#1a1033] md:p-8"
+              action={FORM_ENDPOINT}
+              method="POST"
               onSubmit={onSubmit}
-              noValidate={false}
+              aria-describedby={status === "error" ? "form-error" : undefined}
             >
-              <div className="relative">
+              <div>
+                <label htmlFor="name" className={labelClass}>
+                  Name
+                </label>
                 <input
                   id="name"
                   name="name"
@@ -100,14 +139,14 @@ export function ContactSection() {
                   required
                   maxLength={100}
                   autoComplete="name"
-                  placeholder=" "
+                  placeholder="Your name"
                   className={fieldClass}
                 />
-                <label htmlFor="name" className={labelClass}>
-                  Name
-                </label>
               </div>
-              <div className="relative">
+              <div>
+                <label htmlFor="email" className={labelClass}>
+                  Email
+                </label>
                 <input
                   id="email"
                   name="email"
@@ -115,47 +154,47 @@ export function ContactSection() {
                   required
                   maxLength={200}
                   autoComplete="email"
-                  placeholder=" "
+                  placeholder="you@company.com"
                   className={fieldClass}
                 />
-                <label htmlFor="email" className={labelClass}>
-                  Email
-                </label>
               </div>
-              <div className="relative">
+              <div>
+                <label htmlFor="message" className={labelClass}>
+                  Role or project
+                </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={5}
                   required
                   maxLength={4000}
-                  placeholder=" "
+                  placeholder="Tell me about the role or project you are hiring for"
                   className={`${fieldClass} resize-none`}
                 />
-                <label htmlFor="message" className={labelClass}>
-                  Role or project you are hiring for
-                </label>
               </div>
 
+              <input type="hidden" name="_subject" value="New message from your portfolio" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
               {/* Honeypot: hidden from people and assistive tech, bots tend to fill it. */}
               <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-                <label htmlFor="website">Website</label>
-                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                <label htmlFor="_honey">Leave this empty</label>
+                <input id="_honey" name="_honey" type="text" tabIndex={-1} autoComplete="off" />
               </div>
 
               {status === "error" ? (
-                <p role="alert" className="text-sm text-red-600">
+                <p id="form-error" role="alert" className="rounded-xl border-2 border-cherry bg-blush px-4 py-2.5 text-sm font-bold text-ink">
                   {error}
                 </p>
               ) : null}
 
-              <button type="submit" disabled={status === "sending"} className="btn-primary mt-4 w-full disabled:opacity-60">
-                {status === "sending" ? "Sending…" : "Send message"} <Send className="ml-2 h-4 w-4" />
+              <button type="submit" disabled={status === "sending"} className="btn-primary w-full disabled:opacity-60">
+                {status === "sending" ? "Sending…" : "Send message"} <Send className="h-4 w-4" aria-hidden />
               </button>
             </form>
           )}
         </SectionReveal>
       </div>
-    </section>
+    </Panel>
   );
 }

@@ -1,41 +1,48 @@
-"use client";
-
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { MARQUEE_ITEMS } from "@/app/data/portfolio";
+import { Sparkle } from "@/app/components/ui/blob";
 
-const ITEM_W = 140;
+type TapeProps = {
+  items: readonly string[];
+  bg: string;
+  rotate: string;
+  reverse?: boolean;
+};
 
-export function MarqueeStrip() {
-  const x = useMotionValue(0);
-  const total = MARQUEE_ITEMS.length * ITEM_W;
-
-  useAnimationFrame((_, delta) => {
-    let next = x.get() - delta * 0.045;
-    if (next < -total) next += total;
-    x.set(next);
-  });
-
-  const row = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
-
+function Tape({ items, bg, rotate, reverse = false }: TapeProps) {
+  // Content is duplicated so the -50% translate loops seamlessly.
+  const row = [...items, ...items];
   return (
     <div
-      className="relative select-none overflow-hidden border-y border-[var(--line)] py-4"
-      style={{ background: "var(--ink)" }}
+      className={`pause-on-hover absolute inset-x-[-4%] overflow-hidden border-y-2 border-ink py-3 ${bg}`}
+      style={{ transform: `rotate(${rotate})` }}
     >
-      <motion.div className="flex whitespace-nowrap" style={{ x }}>
+      <div className={`flex w-max whitespace-nowrap ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}>
         {row.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="inline-block px-6 text-[11px] font-bold uppercase tracking-[0.2em]"
-            style={{
-              minWidth: ITEM_W,
-              color: item === "•" ? "#7dd3fc" : "#bfdbfe",
-            }}
+            className="font-display flex items-center gap-6 px-6 text-lg uppercase tracking-tight text-ink md:text-2xl"
+            aria-hidden={i >= items.length}
           >
             {item}
+            <Sparkle className="h-4 w-4 shrink-0" />
           </span>
         ))}
-      </motion.div>
+      </div>
+    </div>
+  );
+}
+
+const TAPE_A = MARQUEE_ITEMS.filter((item) => item !== "•");
+const TAPE_B = ["Accessible by default", "Design to deploy", "AI-assisted workflow", "Built to ship", "Figma to production"];
+
+/** Two crossing "sticker tape" strips, like the reference grid's banners. */
+export function MarqueeStrip() {
+  return (
+    <div className="relative my-10 h-32 overflow-hidden md:my-14 md:h-36" role="presentation">
+      <Tape items={TAPE_A} bg="bg-bubblegum" rotate="-1.6deg" />
+      <div className="absolute inset-0 top-9">
+        <Tape items={TAPE_B} bg="bg-zest" rotate="1.4deg" reverse />
+      </div>
     </div>
   );
 }

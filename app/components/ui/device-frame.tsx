@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { ProjectArt, hasProjectArt } from "@/app/components/ui/project-art";
 
 export type DeviceVariant = "mobile" | "desktop" | "dual";
 
@@ -11,9 +12,11 @@ type ScreenProps = {
   title?: string;
   accent?: string;
   interactive?: boolean;
+  /** Project id — renders custom animated cover art when there is no live embed */
+  artId?: string;
 };
 
-function DeviceScreen({ children, src, title, accent, interactive }: ScreenProps) {
+function DeviceScreen({ children, src, title, accent, interactive, artId }: ScreenProps) {
   if (src && interactive) {
     return (
       <iframe
@@ -40,10 +43,18 @@ function DeviceScreen({ children, src, title, accent, interactive }: ScreenProps
     );
   }
 
+  if (!children && artId && hasProjectArt(artId)) {
+    return (
+      <div className="h-full w-full overflow-hidden">
+        <ProjectArt id={artId} />
+      </div>
+    );
+  }
+
   return (
     <div
       className="flex h-full w-full flex-col items-center justify-center gap-2 p-3"
-      style={{ background: accent ?? "linear-gradient(160deg, #e0f2fe, #bfdbfe)" }}
+      style={{ background: accent ?? "#d9cef7" }}
     >
       {children ?? (
         <div className="flex w-full flex-col items-center gap-2 opacity-90">
@@ -51,7 +62,7 @@ function DeviceScreen({ children, src, title, accent, interactive }: ScreenProps
           <div className="h-2 w-24 rounded-full bg-white/50" />
           <div className="mt-2 h-20 w-full max-w-[85%] rounded-lg bg-white/40" />
           {title ? (
-            <p className="mt-1 max-w-[85%] truncate text-[11px] font-semibold text-[#1e3a5f]/70">{title}</p>
+            <p className="mt-1 max-w-[85%] truncate text-[11px] font-bold text-ink/70">{title}</p>
           ) : null}
         </div>
       )}
@@ -70,13 +81,13 @@ export function MobileFrame({ className = "", size = "md", ...screen }: MobileFr
 
   return (
     <div
-      className={`relative shrink-0 rounded-[2rem] border-[3px] border-[#1e293b] bg-[#1e293b] p-1.5 shadow-xl shadow-[#0f172a]/25 ${w} ${h} ${className}`}
+      className={`relative shrink-0 rounded-[2rem] border-[3px] border-ink bg-ink p-1.5 shadow-[5px_5px_0_#1a1033] ${w} ${h} ${className}`}
     >
-      <div className="absolute left-1/2 top-2 z-10 h-[5px] w-12 -translate-x-1/2 rounded-full bg-[#0f172a]" />
+      <div className="absolute left-1/2 top-2 z-10 h-[5px] w-12 -translate-x-1/2 rounded-full bg-ink" />
       <div className="h-full w-full overflow-hidden rounded-[1.5rem] bg-white">
         <DeviceScreen {...screen} />
       </div>
-      <div className="absolute bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-[#334155]/80" />
+      <div className="absolute bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-white/40" />
     </div>
   );
 }
@@ -95,17 +106,17 @@ export function DesktopFrame({ className = "", wide = false, ...screen }: Deskto
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden rounded-xl border border-[#334155] bg-[#1e293b] shadow-2xl shadow-[#0f172a]/30 ${
+      className={`relative shrink-0 overflow-hidden rounded-2xl border-2 border-ink bg-white shadow-[5px_5px_0_#1a1033] ${
         wide ? "w-full max-w-[520px]" : "w-[min(100%,380px)]"
       } ${className}`}
     >
-      <div className="flex items-center gap-2 border-b border-[#334155] bg-[#0f172a] px-3 py-2">
+      <div className="flex items-center gap-2 border-b-2 border-ink bg-cream px-3 py-2">
         <div className="flex gap-1">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ef4444]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#eab308]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
+          <span className="h-2.5 w-2.5 rounded-full border border-ink bg-cherry" />
+          <span className="h-2.5 w-2.5 rounded-full border border-ink bg-zest" />
+          <span className="h-2.5 w-2.5 rounded-full border border-ink bg-aqua" />
         </div>
-        <div className="min-w-0 flex-1 truncate rounded-md bg-[#1e293b] px-2 py-0.5 text-[9px] text-slate-400">
+        <div className="min-w-0 flex-1 truncate rounded-md border border-ink bg-white px-2 py-0.5 text-[9px] font-bold text-ink-muted">
           {screen.src && screen.title
             ? `${screen.title.toLowerCase().replace(/[^a-z0-9]+/g, "")}.app`
             : "Project overview"}
@@ -173,7 +184,7 @@ export function DualFrame({
           className={interactive ? "shadow-2xl" : "rotate-[6deg] shadow-2xl"}
         />
       </motion.div>
-      <span className="pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#93c5fd]/50 bg-white/90 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#1e40af]">
+      <span className="pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full border-2 border-ink bg-zest px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-ink">
         Desktop + Mobile
       </span>
     </div>
@@ -189,6 +200,7 @@ type ProjectDevicePreviewProps = {
   className?: string;
   /** Smaller frames for magazine-style project rows */
   compact?: boolean;
+  artId?: string;
 };
 
 export function ProjectDevicePreview({
@@ -199,8 +211,10 @@ export function ProjectDevicePreview({
   interactive = false,
   className = "",
   compact = false,
+  artId,
 }: ProjectDevicePreviewProps) {
-  const screen = { accent, title, src, interactive: compact ? false : interactive };
+  // Compact previews never mount a third-party iframe: keeps the page light and fast.
+  const screen = { accent, title, src: compact ? undefined : src, artId, interactive: compact ? false : interactive };
 
   if (variant === "mobile") {
     return (

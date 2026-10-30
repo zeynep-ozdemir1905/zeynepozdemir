@@ -2,48 +2,74 @@
 
 import { motion } from "framer-motion";
 import { GraduationCap, Sparkles, User } from "lucide-react";
-import { ABOUT_COPY, AI_WORKFLOW, EDUCATION, RESUME_SUMMARY, aboutStats } from "@/app/data/portfolio";
+import { Flower } from "@/app/components/ui/blob";
+import { Panel } from "@/app/components/ui/panel";
 import { SectionHeader } from "@/app/components/ui/section-header";
 import { SectionReveal } from "@/app/components/ui/section-reveal";
+import { ABOUT_COPY, AI_WORKFLOW, EDUCATION, RESUME_SUMMARY, aboutStats } from "@/app/data/portfolio";
+
+const STAT_TONES = [
+  { bg: "bg-zest", r: "-1.5deg" },
+  { bg: "bg-bubblegum", r: "1.5deg" },
+  { bg: "bg-lavender", r: "1deg" },
+  { bg: "bg-peach", r: "-1deg" },
+] as const;
 
 export function AboutSection() {
   return (
-    <section id="about" className="scroll-mt-28 border-t border-[var(--line)] px-6 py-28 md:py-32">
-      <div className="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
+    <Panel
+      id="about"
+      tone="aqua"
+      labelledBy="about-title"
+      decor={
+        <Flower lobes={6} depth={0.3} fill="#fff7e8" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rotate-12 opacity-80" />
+      }
+    >
+      <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
         <SectionReveal>
           <SectionHeader
+            id="about-title"
             label="About"
-            title={ABOUT_COPY.title}
-            description={ABOUT_COPY.description}
             icon={User}
             large
+            title={
+              <>
+                {ABOUT_COPY.titleLead} <span className="marker" style={{ ["--marker" as string]: "#eaf7a6" }}>{ABOUT_COPY.titleMark}</span>
+              </>
+            }
+            description={ABOUT_COPY.description}
           />
-          <div className="mt-12 grid grid-cols-2 gap-8 border-t border-[var(--line)] pt-10">
+
+          <div className="mt-12 grid grid-cols-2 gap-4">
             {aboutStats.map((stat, index) => (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20, rotate: 0 }}
+                whileInView={{ opacity: 1, y: 0, rotate: Number.parseFloat(STAT_TONES[index].r) }}
+                whileHover={{ rotate: 0, y: -4 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.06 }}
+                transition={{ type: "spring", stiffness: 200, damping: 18, delay: index * 0.07 }}
+                className={`rounded-3xl border-2 border-ink p-5 shadow-[4px_4px_0_#1a1033] ${STAT_TONES[index].bg}`}
               >
-                <p className="font-display text-3xl font-bold text-[var(--ink)] md:text-4xl">{stat.value}</p>
-                <p className="mt-2 text-sm text-[var(--ink-soft)]">{stat.label}</p>
+                <p className="font-display text-4xl text-ink md:text-5xl">{stat.value}</p>
+                <p className="mt-2 text-sm font-bold text-ink-muted">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </SectionReveal>
 
-        <SectionReveal delay={0.08}>
-          <p className="eyebrow">Summary</p>
-          <p className="mt-6 text-base leading-relaxed text-[var(--ink-muted)] md:text-lg">{RESUME_SUMMARY}</p>
+        <SectionReveal delay={0.08} className="space-y-5">
+          <div className="card-white p-6 md:p-7">
+            <p className="eyebrow">Summary</p>
+            <p className="mt-4 text-base font-medium leading-relaxed text-ink-muted">{RESUME_SUMMARY}</p>
+          </div>
 
-          <div className="mt-10 rounded-2xl border border-[var(--line)] bg-[var(--surface-elevated)] p-6">
-            <div className="flex items-center gap-3">
-              <Sparkles size={18} className="text-[var(--accent-bright)]" strokeWidth={1.5} />
-              <p className="eyebrow">{AI_WORKFLOW.label}</p>
-            </div>
-            <p className="mt-4 text-sm leading-relaxed text-[var(--ink-muted)]">{AI_WORKFLOW.summary}</p>
+          <div className="rounded-3xl border-2 border-ink bg-zest p-6 shadow-[5px_5px_0_#1a1033] md:p-7">
+            <p className="eyebrow">
+              <Sparkles size={14} aria-hidden />
+              {AI_WORKFLOW.label}
+            </p>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-ink md:text-base">{AI_WORKFLOW.summary}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {AI_WORKFLOW.tools.map((tool) => (
                 <span key={tool} className="tag-minimal">
@@ -53,25 +79,25 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="mt-14 border-t border-[var(--line)] pt-10">
-            <div className="flex items-center gap-3">
-              <GraduationCap size={18} className="text-[var(--accent-bright)]" strokeWidth={1.5} />
-              <p className="eyebrow">Education</p>
-            </div>
-            <div className="mt-6 space-y-6">
+          <div className="card-white p-6 md:p-7">
+            <p className="eyebrow">
+              <GraduationCap size={14} aria-hidden />
+              Education
+            </p>
+            <ul className="mt-5 space-y-5">
               {EDUCATION.map((edu) => (
-                <div key={edu.degree}>
-                  <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--ink-soft)]">{edu.date}</p>
-                  <h4 className="mt-2 font-semibold text-[var(--ink)]">{edu.degree}</h4>
-                  <p className="mt-1 text-sm text-[var(--accent-bright)]">
+                <li key={edu.degree} className="border-l-4 border-bubblegum pl-4">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-ink-soft">{edu.date}</p>
+                  <h3 className="mt-1 font-bold text-ink">{edu.degree}</h3>
+                  <p className="mt-0.5 text-sm font-medium text-ink-muted">
                     {edu.school} · {edu.location}
                   </p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </SectionReveal>
       </div>
-    </section>
+    </Panel>
   );
 }

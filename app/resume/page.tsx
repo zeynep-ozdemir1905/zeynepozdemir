@@ -13,16 +13,17 @@ import {
 const featured = projects.slice(0, 4);
 
 export const metadata = {
-  title: "Resume | Zeynep Ozdemir",
+  title: "Resume",
+  description: "Resume of Zeynep Ozdemir, Junior Software Engineer (Frontend & Full-Stack) in Calgary, AB.",
 };
 
 export default function ResumePage() {
   return (
-    <main className="min-h-screen bg-[var(--surface)] px-6 py-16 text-[var(--ink)]">
-      <div className="mx-auto max-w-3xl">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] pb-8">
+    <main id="main" className="min-h-screen bg-lavender px-3 py-6 text-ink md:px-6 md:py-10">
+      <div className="mx-auto max-w-3xl rounded-[2rem] border-2 border-ink bg-white p-6 shadow-[8px_8px_0_#1a1033] md:p-12">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink pb-8">
           <div>
-            <h1 className="font-display text-4xl font-bold tracking-tight">{PROFILE.name}</h1>
+            <h1 className="font-display text-4xl md:text-5xl">{PROFILE.name}</h1>
             <p className="mt-2 text-[var(--ink-muted)]">{PROFILE.headline}</p>
             <p className="mt-3 text-sm text-[var(--ink-soft)]">
               {PROFILE.city} ({PROFILE.relocation.toLowerCase()}) · {PROFILE.emailDisplay} · {PROFILE.phoneDisplay}
